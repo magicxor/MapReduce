@@ -55,3 +55,7 @@ __history/
 
 # Castalia statistics file
 *.stat
+
+# bin
+Android/
+OSX32/
