@@ -15,9 +15,11 @@ type
     ButtonMap: TButton;
     ButtonReduce: TButton;
     ButtonForEach: TButton;
+    ButtonMapParallel: TButton;
     procedure ButtonMapClick(Sender: TObject);
     procedure ButtonReduceClick(Sender: TObject);
     procedure ButtonForEachClick(Sender: TObject);
+    procedure ButtonMapParallelClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -29,7 +31,7 @@ var
 
 implementation
 
-uses MapReduce;
+uses MapReduce, MapParallel;
 
 {$R *.dfm}
 
@@ -38,7 +40,7 @@ var
   TempArr: TArray<string>;
 begin
   TempArr := string(EditArrayElems.Text).Split(['|']);
-  TMapReduce<string>.ForEachArr(TempArr,
+  TMapReduce<string>.ForEachArrChange(TempArr,
     procedure(var X: string; const I: Integer; var Done: Boolean)
     begin
       X := X + ' ★';
@@ -51,6 +53,18 @@ procedure TFormMapReduce.ButtonMapClick(Sender: TObject);
 begin
   MemoOutput.Clear;
   MemoOutput.Lines.AddStrings(TMapReduce<string>.Map(
+    //
+    string(EditArrayElems.Text).Split(['|']),
+    function(const X: string; const I: Integer): string
+    begin
+      Result := I.ToString + ' ' + X;
+    end));
+end;
+
+procedure TFormMapReduce.ButtonMapParallelClick(Sender: TObject);
+begin
+  MemoOutput.Clear;
+  MemoOutput.Lines.AddStrings(TMapParallel<string>.Map(
     //
     string(EditArrayElems.Text).Split(['|']),
     function(const X: string; const I: Integer): string

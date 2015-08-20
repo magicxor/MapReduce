@@ -16,11 +16,12 @@ object FormMapReduce: TFormMapReduce
   object LabelOutput: TLabel
     AlignWithMargins = True
     Left = 3
-    Top = 157
+    Top = 193
     Width = 341
     Height = 13
     Align = alTop
     Caption = 'Result'
+    ExplicitTop = 157
     ExplicitWidth = 30
   end
   object LabelArrayElems: TLabel
@@ -46,11 +47,13 @@ object FormMapReduce: TFormMapReduce
   object MemoOutput: TMemo
     AlignWithMargins = True
     Left = 3
-    Top = 176
+    Top = 212
     Width = 341
-    Height = 150
+    Height = 114
     Align = alClient
     TabOrder = 1
+    ExplicitTop = 176
+    ExplicitHeight = 150
   end
   object ButtonMap: TButton
     AlignWithMargins = True
@@ -66,23 +69,38 @@ object FormMapReduce: TFormMapReduce
   object ButtonReduce: TButton
     AlignWithMargins = True
     Left = 3
-    Top = 85
+    Top = 121
     Width = 341
     Height = 30
     Align = alTop
     Caption = 'Reduce to list'
     TabOrder = 3
     OnClick = ButtonReduceClick
+    ExplicitTop = 85
   end
   object ButtonForEach: TButton
     AlignWithMargins = True
     Left = 3
-    Top = 121
+    Top = 157
     Width = 341
     Height = 30
     Align = alTop
     Caption = 'ForEach + '#9733
     TabOrder = 4
     OnClick = ButtonForEachClick
+    ExplicitTop = 121
+  end
+  object ButtonMapParallel: TButton
+    AlignWithMargins = True
+    Left = 3
+    Top = 85
+    Width = 341
+    Height = 30
+    Align = alTop
+    Caption = 'Parallel map to list'
+    TabOrder = 5
+    OnClick = ButtonMapParallelClick
+    ExplicitLeft = 6
+    ExplicitTop = 57
   end
 end

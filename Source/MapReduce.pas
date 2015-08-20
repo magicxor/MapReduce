@@ -15,8 +15,8 @@ type
     TPredicateRef = reference to function(const X: T): Boolean;
     TReduceRef    = reference to function(const Accumulator: T; const X: T; const I: Integer): T;
   public
-    class procedure ForEachArr(var Source: TArray<T>; const Lambda: TForEachRef); overload; static;
-    class procedure ForEachArr(var Source: array of T; const Lambda: TForEachRef); overload; static;
+    class procedure ForEachArrChange(var Source: TArray<T>; const Lambda: TForEachRef); overload; static;
+    class procedure ForEachArrChange(var Source: array of T; const Lambda: TForEachRef); overload; static;
 
     class function MapToArr(const Source: IEnumerable<T>; const Lambda: TMapRef): TArray<T>; static;
     class function Map(const Source: TArray<T>; const Lambda: TMapRef): TArray<T>; overload; static;
@@ -41,9 +41,9 @@ type
 
 implementation
 
-class procedure TMapReduce<T>.ForEachArr(var Source: TArray<T>; const Lambda: TForEachRef);
+class procedure TMapReduce<T>.ForEachArrChange(var Source: TArray<T>; const Lambda: TForEachRef);
 {$Include ForEach}
-class procedure TMapReduce<T>.ForEachArr(var Source: array of T; const Lambda: TForEachRef);
+class procedure TMapReduce<T>.ForEachArrChange(var Source: array of T; const Lambda: TForEachRef);
 {$Include ForEach}
 
 class function TMapReduce<T>.MapToArr(const Source: IEnumerable<T>; const Lambda: TMapRef): TArray<T>;
