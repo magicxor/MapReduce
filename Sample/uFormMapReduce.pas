@@ -52,25 +52,25 @@ begin
   MemoOutput.Clear;
   MemoOutput.Lines.AddStrings(TMapReduce<string>.Map(
     //
-    string(EditArrayElems.Text).Split(['|']), (
+    string(EditArrayElems.Text).Split(['|']),
     function(const X: string; const I: Integer): string
     begin
       Result := I.ToString + ' ' + X;
-    end)));
+    end));
 end;
 
 procedure TFormMapReduce.ButtonReduceClick(Sender: TObject);
 begin
   MemoOutput.Lines.Text := (TMapReduce<string>.Reduce(
   //
-    string(EditArrayElems.Text).Split(['|']), string.Empty, (
+    string(EditArrayElems.Text).Split(['|']), string.Empty,
     function(const Accumulator: string; const X: string; const I: Integer): string
     begin
       if I = 0 then
         Result := I.ToString + ' ' + X
       else
         Result := Accumulator + sLineBreak + I.ToString + ' ' + X;
-    end)));
+    end));
 end;
 
 end.

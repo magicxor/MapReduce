@@ -21,7 +21,6 @@ object FormMapReduce: TFormMapReduce
     Height = 13
     Align = alTop
     Caption = 'Result'
-    ExplicitTop = 121
     ExplicitWidth = 30
   end
   object LabelArrayElems: TLabel
@@ -52,8 +51,6 @@ object FormMapReduce: TFormMapReduce
     Height = 150
     Align = alClient
     TabOrder = 1
-    ExplicitTop = 140
-    ExplicitHeight = 148
   end
   object ButtonMap: TButton
     AlignWithMargins = True
@@ -87,7 +84,5 @@ object FormMapReduce: TFormMapReduce
     Caption = 'ForEach + '#9733
     TabOrder = 4
     OnClick = ButtonForEachClick
-    ExplicitLeft = 6
-    ExplicitTop = 93
   end
 end
