@@ -74,7 +74,7 @@ begin
       end;
     CMapParallel:
       begin
-        TempArr := TMapParallel<string>.Map(
+        TempArr := TMapParallel<string,string>.Map(
         //
           string(AInputText).Split(['|']),
           function(const X: string; const I: Integer): string

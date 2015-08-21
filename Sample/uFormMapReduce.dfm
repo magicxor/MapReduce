@@ -23,7 +23,6 @@ object FormMapReduce: TFormMapReduce
     Height = 13
     Align = alTop
     Caption = 'Result'
-    ExplicitTop = 193
     ExplicitWidth = 30
   end
   object LabelArrayElems: TLabel
@@ -43,7 +42,6 @@ object FormMapReduce: TFormMapReduce
     Width = 341
     Height = 13
     Align = alBottom
-    ExplicitTop = 313
     ExplicitWidth = 3
   end
   object EditArrayElems: TEdit
@@ -65,8 +63,6 @@ object FormMapReduce: TFormMapReduce
     Align = alClient
     ScrollBars = ssVertical
     TabOrder = 1
-    ExplicitTop = 212
-    ExplicitHeight = 114
   end
   object ButtonMap: TButton
     AlignWithMargins = True
@@ -111,7 +107,6 @@ object FormMapReduce: TFormMapReduce
     Caption = 'Parallel map to list'
     TabOrder = 5
     OnClick = BtnClickProcess
-    ExplicitLeft = -2
   end
   object RadioGroupShowResult: TRadioGroup
     AlignWithMargins = True

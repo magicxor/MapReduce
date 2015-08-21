@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Generics.Collections;
 
 type
-  TIndexedRecord<T> = record
+  TIndexed<T> = record
   private
     FIndex: Integer;
     FValue: T;
@@ -14,8 +14,12 @@ type
     constructor Create(AIndex: Integer; AValue: T);
   end;
 
-  TMapParallel<T> = class
+  TListWriter<T> = class
+  public
+    class procedure AddToThreadList(AItem: T; AThreadList: TThreadList<T>); static;
+  end;
 
+  TMapParallel<T> = class
   strict private
   type
     TForEachRef    = reference to procedure(var X: T; const I: Integer; var Done: Boolean);
@@ -23,43 +27,36 @@ type
     TFilterRef     = reference to function(const X: T; const I: Integer): Boolean;
     TPredicateRef  = reference to function(const X: T): Boolean;
     TReduceRef     = reference to function(const Accumulator: T; const X: T; const I: Integer): T;
-    TIndexedRecord = TIndexedRecord<T>;
-  class procedure AddToThreadList(AItem: TIndexedRecord;
-    AThreadList: TThreadList<TIndexedRecord>); static;
-
+    TIndexed       = TIndexed<T>;
+    TListWriter    = TListWriter<TIndexed>;
   public
-    class function Map(const Source: TArray<T>; const Lambda: TMapRef): TArray<T>; overload; static;
-    // class function Map(const Source: array of T; const Lambda: TMapRef): TArray<T>; overload; static;
+    class function Map(const Source: TArray<T>; const Lambda: TMapRef): TArray<T>; static;
+    class function Filter(const Source: TArray<T>; const Lambda: TFilterRef): TArray<T>; static;
+    class function Every(const Source: TArray<T>; const Lambda: TPredicateRef): Boolean; static;
+    class function Some(const Source: TArray<T>; const Lambda: TPredicateRef): Boolean; static;
+  end;
 
-    class function Filter(const Source: TArray<T>; const Lambda: TFilterRef): TArray<T>;
-      overload; static;
-    // class function Filter(const Source: array of T; const Lambda: TFilterRef): TArray<T>; overload; static;
-
-    class function Every(const Source: TArray<T>; const Lambda: TPredicateRef): Boolean;
-      overload; static;
-    // class function Every(const Source: array of T; const Lambda: TPredicateRef): Boolean; overload; static;
-
-    class function Some(const Source: TArray<T>; const Lambda: TPredicateRef): Boolean;
-      overload; static;
-    // class function Some(const Source: array of T; const Lambda: TPredicateRef): Boolean; overload; static;
+  TMapParallel<T, R> = class(TMapParallel<T>)
+  strict private
+  type
+    TMapToRef      = reference to function(const X: T; const I: Integer): R;
+    TIndexed       = TIndexed<R>;
+    TListWriter    = TListWriter<TIndexed>;
+  public
+    class function Map(const Source: TArray<T>; const Lambda: TMapToRef): TArray<R>; static;
   end;
 
 implementation
 
 uses System.Threading, System.SyncObjs, System.Classes, System.Generics.Defaults;
 
-{ TIndexedRecord<T>}
-
-constructor TIndexedRecord<T>.Create(AIndex: Integer; AValue: T);
+constructor TIndexed<T>.Create(AIndex: Integer; AValue: T);
 begin
   FIndex := AIndex;
   FValue := AValue;
 end;
 
-{ TMapParallel<T> }
-
-class procedure TMapParallel<T>.AddToThreadList(AItem: TIndexedRecord;
-  AThreadList: TThreadList<TIndexedRecord>);
+class procedure TListWriter<T>.AddToThreadList(AItem: T; AThreadList: TThreadList<T>);
 begin
   AThreadList.LockList;
   try
@@ -71,22 +68,13 @@ end;
 
 class function TMapParallel<T>.Map(const Source: TArray<T>; const Lambda: TMapRef): TArray<T>;
 {$INCLUDE Map}
-// class function TMapParallel<T>.Map(const Source: array of T; const Lambda: TMapRef): TArray<T>;
-// {$Include Map}
-
+class function TMapParallel<T, R>.Map(const Source: TArray<T>; const Lambda: TMapToRef): TArray<R>;
+{$INCLUDE Map}
 class function TMapParallel<T>.Filter(const Source: TArray<T>; const Lambda: TFilterRef): TArray<T>;
 {$INCLUDE Filter}
-// class function TMapParallel<T>.Filter(const Source: array of T; const Lambda: TFilterRef): TArray<T>;
-// {$Include Filter}
-
 class function TMapParallel<T>.Every(const Source: TArray<T>; const Lambda: TPredicateRef): Boolean;
 {$INCLUDE Every}
-// class function TMapParallel<T>.Every(const Source: array of T; const Lambda: TPredicateRef): Boolean;
-// {$Include Every}
-
 class function TMapParallel<T>.Some(const Source: TArray<T>; const Lambda: TPredicateRef): Boolean;
 {$INCLUDE Some}
-// class function TMapParallel<T>.Some(const Source: array of T; const Lambda: TPredicateRef): Boolean;
-// {$Include Some}
 
 end.
