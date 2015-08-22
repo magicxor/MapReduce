@@ -42,11 +42,16 @@ type
   TMapReduce<T, R> = class (TMapReduce<T>)
   strict private
   type
-    TMapToRef      = reference to function(const X: T; const I: Integer): R;
+    TMapToRef     = reference to function(const X: T; const I: Integer): R;
+    TReduceToRef  = reference to function(const Accumulator: R; const X: T; const I: Integer): R;
   public
     class function MapToArr(const Source: IEnumerable<T>; const Lambda: TMapToRef): TArray<R>; static;
     class function Map(const Source: TArray<T>; const Lambda: TMapToRef): TArray<R>; overload; static;
     class function Map(const Source: array of T; const Lambda: TMapToRef): TArray<R>; overload; static;
+
+    class function Reduce(const Source: IEnumerable<T>; const Init: R; const Lambda: TReduceToRef): R; overload; static;
+    class function Reduce(const Source: TArray<T>; const Init: R; const Lambda: TReduceToRef): R; overload; static;
+    class function Reduce(const Source: array of T; const Init: R; const Lambda: TReduceToRef): R; overload; static;
   end;
 
 implementation
@@ -95,6 +100,12 @@ class function TMapReduce<T>.Reduce(const Source: IEnumerable<T>; const Init: T;
 class function TMapReduce<T>.Reduce(const Source: TArray<T>; const Init: T; const Lambda: TReduceRef): T;
 {$Include Reduce}
 class function TMapReduce<T>.Reduce(const Source: array of T; const Init: T; const Lambda: TReduceRef): T;
+{$Include Reduce}
+class function TMapReduce<T, R>.Reduce(const Source: IEnumerable<T>; const Init: R; const Lambda: TReduceToRef): R;
+{$Include Reduce}
+class function TMapReduce<T, R>.Reduce(const Source: TArray<T>; const Init: R; const Lambda: TReduceToRef): R;
+{$Include Reduce}
+class function TMapReduce<T, R>.Reduce(const Source: array of T; const Init: R; const Lambda: TReduceToRef): R;
 {$Include Reduce}
 
 end.
