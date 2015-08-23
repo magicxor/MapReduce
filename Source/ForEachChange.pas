@@ -1,15 +1,12 @@
 var
   I: Integer;
   Done: Boolean;
-  X: T;
 begin
-  I := 0;
   Done := False;
-  for X in Source do
+  for I := Low(Source) to High(Source) do
   begin
-    Lambda(X, I, Done);
+    Lambda(Source[I], I, Done);
     if Done then
       Break;
-	Inc(I);  
   end;
 end;
