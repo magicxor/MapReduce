@@ -38,6 +38,10 @@ type
 
     function ReduceTo(const Accumulator: string; const X: string; const I: Integer): string;
     function ReduceToL(const Accumulator: string; const X: string): string;
+
+    function MapToIntegerL(const X: string): Integer;
+    function ReduceIntegersL(const Accumulator: Integer; const X: Integer): Integer;
+    function ReduceToIntegerL(const Accumulator: Integer; const X: string): Integer;
   public
     procedure SetUp; override;
     procedure TearDown; override;
@@ -55,6 +59,8 @@ type
     procedure TestMap;
     procedure TestFilter;
     procedure TestReduce;
+    procedure TestMapToInteger;
+    procedure TestReduceToInteger;
   end;
 
 implementation
@@ -159,6 +165,21 @@ begin
   Result := Accumulator + sLineBreak + X;
 end;
 
+function TestTMapReduce.MapToIntegerL(const X: string): Integer;
+begin
+  Result := X.ToInteger;
+end;
+
+function TestTMapReduce.ReduceIntegersL(const Accumulator, X: Integer): Integer;
+begin
+  Result := Accumulator + X;
+end;
+
+function TestTMapReduce.ReduceToIntegerL(const Accumulator: Integer; const X: string): Integer;
+begin
+  Result := Accumulator + X.ToInteger;
+end;
+
 procedure TestTMapReduce.SetUp;
 begin
 
@@ -229,12 +250,23 @@ begin
     PredicateEndsWithTriangle));
 end;
 
+procedure TestTMapReduce.TestMapToInteger;
+begin
+  CheckTrue(TMapReduce<Integer>.Reduce(TMapReduce<string, Integer>.Map(c_std_arr, MapToIntegerL),
+    ReduceIntegersL) = 4800);
+end;
+
 procedure TestTMapReduce.TestReduce;
 var
   ResultValue: string;
 begin
   ResultValue := TMapReduce<string>.Reduce(c_tarray, Reduce);
   CheckTrue(Length(ResultValue.Split([sLineBreak])) = Length(c_std_arr));
+end;
+
+procedure TestTMapReduce.TestReduceToInteger;
+begin
+  CheckTrue(TMapReduce<string, Integer>.Reduce(c_std_arr, 0, ReduceToIntegerL) = 4800);
 end;
 
 procedure TestTMapReduce.TestForEach;
