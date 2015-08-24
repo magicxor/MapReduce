@@ -1,8 +1,9 @@
 var
+  I: Integer;
   X: T;
 begin
-  Result := Source[0];
-  if Length(Source) > 2 then
-    for X in Source do
-      Result := Lambda(Result, X);
+  Result := Source[Low(Source)];
+  if Length(Source) > 1 then
+    for I := Low(Source) + 1 to High(Source) do
+      Result := Lambda(Result, Source[I]);
 end;

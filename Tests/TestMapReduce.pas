@@ -18,6 +18,26 @@ type
   // Test methods for class TMapReduce
 
   TestTMapReduce = class(TTestCase)
+  private
+    procedure ForEachAddTriangle(var X: string; const I: Integer; var Done: Boolean);
+    procedure ForEachLAddTriangle(var X: string);
+
+    function Map(const X: string; const I: Integer): string;
+    function MapL(const X: string): string;
+
+    function FilterLengthMoreThan1(const X: string; const I: Integer): Boolean;
+    function FilterLLengthMoreThan1(const X: string): Boolean;
+
+    function PredicateEndsWithTriangle(const X: string): Boolean;
+
+    function Reduce(const Accumulator: string; const X: string; const I: Integer): string;
+    function ReduceL(const Accumulator: string; const X: string): string;
+
+    function MapTo(const X: string; const I: Integer): string;
+    function MapToL(const X: string): string;
+
+    function ReduceTo(const Accumulator: string; const X: string; const I: Integer): string;
+    function ReduceToL(const Accumulator: string; const X: string): string;
   public
     procedure SetUp; override;
     procedure TearDown; override;
@@ -32,44 +52,112 @@ type
     procedure TestForEach3;
     procedure TestForEach4;
     procedure TestForEach5;
-    {
-      procedure TestMap;
-      procedure TestMap1;
-      procedure TestMap2;
-      procedure TestMap3;
-      procedure TestMap4;
-      procedure TestMap5;
-      procedure TestFilterToArr;
-      procedure TestFilter;
-      procedure TestFilter1;
-      procedure TestEvery;
-      procedure TestEvery1;
-      procedure TestEvery2;
-      procedure TestSome;
-      procedure TestSome1;
-      procedure TestSome2;
-      procedure TestReduce;
-      procedure TestReduce1;
-      procedure TestReduce2;
-      procedure TestReduce3;
-      procedure TestReduce4;
-      procedure TestReduce5;
-      procedure TestReduce6;
-      procedure TestReduce7;
-      procedure TestReduce8;
-      procedure TestReduce9;
-      procedure TestReduce10;
-      procedure TestReduce11;
-    }
+    procedure TestMap;
+    procedure TestFilter;
+    procedure TestReduce;
   end;
-
-const
-  c_std_arr: array of string = ['1', '22', '333', '4444'];
-  c_tarray: TArray<string>   = ['1', '22', '333', '4444'];
 
 implementation
 
-uses System.Generics.Collections;
+uses System.Generics.Collections, System.Types;
+
+type
+  TTestCaseList = class
+    class function Create: TList<string>;
+  end;
+
+const
+  c_std_arr: TStringDynArray = ['1', '22', '333', '4444'];
+  c_tarray: TArray<string>   = ['1', '22', '333', '4444'];
+
+  { TTestCaseList }
+
+class function TTestCaseList.Create: TList<string>;
+var
+  ResultList: TList<string>;
+begin
+  ResultList := TList<string>.Create;
+  TMapReduce<string>.ForEach(c_std_arr,
+    procedure(const X: string)
+    begin
+      ResultList.Add(X);
+    end);
+  Result := ResultList;
+end;
+
+{ TestTMapReduce }
+
+function TestTMapReduce.FilterLengthMoreThan1(const X: string; const I: Integer): Boolean;
+begin
+  if X.Length > 1 then
+    Result := True
+  else
+    Result := False;
+end;
+
+function TestTMapReduce.FilterLLengthMoreThan1(const X: string): Boolean;
+begin
+  if X.Length > 1 then
+    Result := True
+  else
+    Result := False;
+end;
+
+procedure TestTMapReduce.ForEachAddTriangle(var X: string; const I: Integer; var Done: Boolean);
+begin
+  X := X + StringOfChar('▲', I + 1);
+  Done := False;
+end;
+
+procedure TestTMapReduce.ForEachLAddTriangle(var X: string);
+begin
+  X := X + '▲';
+end;
+
+function TestTMapReduce.Map(const X: string; const I: Integer): string;
+begin
+  Result := X + StringOfChar('▲', I + 1);
+end;
+
+function TestTMapReduce.MapL(const X: string): string;
+begin
+  Result := X + '▲';
+end;
+
+function TestTMapReduce.MapTo(const X: string; const I: Integer): string;
+begin
+  Result := X + StringOfChar('▲', I + 1);
+end;
+
+function TestTMapReduce.MapToL(const X: string): string;
+begin
+  Result := X + '▲';
+end;
+
+function TestTMapReduce.PredicateEndsWithTriangle(const X: string): Boolean;
+begin
+  Result := X.EndsWith('▲');
+end;
+
+function TestTMapReduce.Reduce(const Accumulator, X: string; const I: Integer): string;
+begin
+  Result := Accumulator + sLineBreak + X + StringOfChar('▲', I + 1);
+end;
+
+function TestTMapReduce.ReduceL(const Accumulator, X: string): string;
+begin
+  Result := Accumulator + sLineBreak + X;
+end;
+
+function TestTMapReduce.ReduceTo(const Accumulator, X: string; const I: Integer): string;
+begin
+  Result := Accumulator + sLineBreak + X + StringOfChar('▲', I + 1);
+end;
+
+function TestTMapReduce.ReduceToL(const Accumulator, X: string): string;
+begin
+  Result := Accumulator + sLineBreak + X;
+end;
 
 procedure TestTMapReduce.SetUp;
 begin
@@ -86,51 +174,23 @@ var
   Source: TArray<string>;
 begin
   // Setup method call parameters
-  Source := [];
-  TMapReduce<string>.ForEach(c_std_arr,
-    procedure(const X: string)
-    begin
-      Source := Source + [X];
-    end);
+  Source := Copy(c_tarray);
   // Testing
-  TMapReduce<string>.ForEachArrChange(Source,
-    procedure(var X: string; const I: Integer; var Done: Boolean)
-    begin
-      X := X + '▲';
-      Done := False;
-    end);
+  TMapReduce<string>.ForEachArrChange(Source, ForEachAddTriangle);
   // Validate method results
-  CheckTrue(TMapReduce<string>.Every(Source,
-    function(const X: string): Boolean
-    begin
-      Result := X.EndsWith('▲');
-    end));
+  CheckTrue(TMapReduce<string>.Every(Source, PredicateEndsWithTriangle));
 end;
 
 procedure TestTMapReduce.TestForEachArrChange1;
 var
-  Source: array of string;
+  Source: TStringDynArray;
 begin
   // Setup method call parameters
-  Source := [];
-  TMapReduce<string>.ForEach(c_std_arr,
-    procedure(const X: string)
-    begin
-      Source := Source + [X];
-    end);
+  Source := Copy(c_std_arr);
   // Testing
-  TMapReduce<string>.ForEachArrChange(Source,
-    procedure(var X: string; const I: Integer; var Done: Boolean)
-    begin
-      X := X + '▲';
-      Done := False;
-    end);
+  TMapReduce<string>.ForEachArrChange(Source, ForEachAddTriangle);
   // Validate method results
-  CheckTrue(TMapReduce<string>.Every(Source,
-    function(const X: string): Boolean
-    begin
-      Result := X.EndsWith('▲');
-    end));
+  CheckTrue(TMapReduce<string>.Every(Source, PredicateEndsWithTriangle));
 end;
 
 procedure TestTMapReduce.TestForEachArrChange2;
@@ -138,49 +198,43 @@ var
   Source: TArray<string>;
 begin
   // Setup method call parameters
-  Source := [];
-  TMapReduce<string>.ForEach(c_std_arr,
-    procedure(const X: string)
-    begin
-      Source := Source + [X];
-    end);
+  Source := Copy(c_tarray);
   // Testing
-  TMapReduce<string>.ForEachArrChange(Source,
-    procedure(var X: string)
-    begin
-      X := X + '▲';
-    end);
+  TMapReduce<string>.ForEachArrChange(Source, ForEachLAddTriangle);
   // Validate method results
-  CheckTrue(TMapReduce<string>.Every(Source,
-    function(const X: string): Boolean
-    begin
-      Result := X.EndsWith('▲');
-    end));
+  CheckTrue(TMapReduce<string>.Every(Source, PredicateEndsWithTriangle));
 end;
 
 procedure TestTMapReduce.TestForEachArrChange3;
 var
-  Source: array of string;
+  Source: TStringDynArray;
 begin
   // Setup method call parameters
-  Source := [];
-  TMapReduce<string>.ForEach(c_std_arr,
-    procedure(const X: string)
-    begin
-      Source := Source + [X];
-    end);
+  Source := Copy(c_std_arr);
   // Testing
-  TMapReduce<string>.ForEachArrChange(Source,
-    procedure(var X: string)
-    begin
-      X := X + '▲';
-    end);
+  TMapReduce<string>.ForEachArrChange(Source, ForEachLAddTriangle);
   // Validate method results
-  CheckTrue(TMapReduce<string>.Every(Source,
-    function(const X: string): Boolean
-    begin
-      Result := X.EndsWith('▲');
-    end));
+  CheckTrue(TMapReduce<string>.Every(Source, PredicateEndsWithTriangle));
+end;
+
+procedure TestTMapReduce.TestFilter;
+begin
+  CheckTrue(Length(TMapReduce<string>.Filter(c_std_arr, FilterLengthMoreThan1))
+    = Length(c_std_arr) - 1);
+end;
+
+procedure TestTMapReduce.TestMap;
+begin
+  CheckTrue(TMapReduce<string>.Every(TMapReduce<string>.Map(c_std_arr, Map),
+    PredicateEndsWithTriangle));
+end;
+
+procedure TestTMapReduce.TestReduce;
+var
+  ResultValue: string;
+begin
+  ResultValue := TMapReduce<string>.Reduce(c_tarray, Reduce);
+  CheckTrue(Length(ResultValue.Split([sLineBreak])) = Length(c_std_arr));
 end;
 
 procedure TestTMapReduce.TestForEach;
@@ -189,13 +243,8 @@ var
   LoopCount: Integer;
 begin
   // Setup method call parameters
-  Source := TList<string>.Create;
+  Source := TTestCaseList.Create;
   try
-    TMapReduce<string>.ForEach(c_std_arr,
-      procedure(const X: string)
-      begin
-        Source.Add(X);
-      end);
     LoopCount := 0;
     // Testing
     TMapReduce<string>.ForEach(Source,
@@ -266,13 +315,8 @@ var
   LoopCount: Integer;
 begin
   // Setup method call parameters
-  Source := TList<string>.Create;
+  Source := TTestCaseList.Create;
   try
-    TMapReduce<string>.ForEach(c_std_arr,
-      procedure(const X: string)
-      begin
-        Source.Add(X);
-      end);
     LoopCount := 0;
     // Testing
     TMapReduce<string>.ForEach(Source,

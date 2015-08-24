@@ -25,6 +25,8 @@ type
 
     TReduceRef      = reference to function(const Accumulator: T; const X: T; const I: Integer): T;
     TReduceLRef     = reference to function(const Accumulator: T; const X: T): T;
+
+    ArrayOfT        = array of T;
   public
     class procedure ForEachArrChange(var Source: TArray<T>; const Lambda: TForEachChangeRef); overload; static;
     class procedure ForEachArrChange(var Source: array of T; const Lambda: TForEachChangeRef); overload; static;
@@ -44,22 +46,22 @@ type
     class function MapToArr(const Source: IEnumerable<T>; const Lambda: TMapRef): TArray<T>; overload; static;
     class function MapToArr(const Source: TEnumerable<T>; const Lambda: TMapRef): TArray<T>; overload; static;
     class function Map(const Source: TArray<T>; const Lambda: TMapRef): TArray<T>; overload; static;
-    class function Map(const Source: array of T; const Lambda: TMapRef): TArray<T>; overload; static;
+    class function Map(const Source: array of T; const Lambda: TMapRef): ArrayOfT; overload; static;
 
     class function MapToArr(const Source: IEnumerable<T>; const Lambda: TMapLRef): TArray<T>; overload; static;
     class function MapToArr(const Source: TEnumerable<T>; const Lambda: TMapLRef): TArray<T>; overload; static;
     class function Map(const Source: TArray<T>; const Lambda: TMapLRef): TArray<T>; overload; static;
-    class function Map(const Source: array of T; const Lambda: TMapLRef): TArray<T>; overload; static;
+    class function Map(const Source: array of T; const Lambda: TMapLRef): ArrayOfT; overload; static;
 
     class function FilterToArr(const Source: IEnumerable<T>; const Lambda: TFilterRef): TArray<T>; overload; static;
     class function FilterToArr(const Source: TEnumerable<T>; const Lambda: TFilterRef): TArray<T>; overload; static;
     class function Filter(const Source: TArray<T>; const Lambda: TFilterRef): TArray<T>; overload; static;
-    class function Filter(const Source: array of T; const Lambda: TFilterRef): TArray<T>; overload; static;
+    class function Filter(const Source: array of T; const Lambda: TFilterRef): ArrayOfT; overload; static;
 
     class function FilterToArr(const Source: IEnumerable<T>; const Lambda: TFilterLRef): TArray<T>; overload; static;
     class function FilterToArr(const Source: TEnumerable<T>; const Lambda: TFilterLRef): TArray<T>; overload; static;
     class function Filter(const Source: TArray<T>; const Lambda: TFilterLRef): TArray<T>; overload; static;
-    class function Filter(const Source: array of T; const Lambda: TFilterLRef): TArray<T>; overload; static;
+    class function Filter(const Source: array of T; const Lambda: TFilterLRef): ArrayOfT; overload; static;
 
     class function Every(const Source: IEnumerable<T>; const Lambda: TPredicateRef): Boolean; overload; static;
     class function Every(const Source: TEnumerable<T>; const Lambda: TPredicateRef): Boolean; overload; static;
@@ -100,16 +102,18 @@ type
 
     TReduceToRef  = reference to function(const Accumulator: R; const X: T; const I: Integer): R;
     TReduceToLRef = reference to function(const Accumulator: R; const X: T): R;
+
+    ArrayOfR        = array of R;
   public
     class function MapToArr(const Source: IEnumerable<T>; const Lambda: TMapToRef): TArray<R>; overload; static;
     class function MapToArr(const Source: TEnumerable<T>; const Lambda: TMapToRef): TArray<R>; overload; static;
     class function Map(const Source: TArray<T>; const Lambda: TMapToRef): TArray<R>; overload; static;
-    class function Map(const Source: array of T; const Lambda: TMapToRef): TArray<R>; overload; static;
+    class function Map(const Source: array of T; const Lambda: TMapToRef): ArrayOfR; overload; static;
 
     class function MapToArr(const Source: IEnumerable<T>; const Lambda: TMapToLRef): TArray<R>; overload; static;
     class function MapToArr(const Source: TEnumerable<T>; const Lambda: TMapToLRef): TArray<R>; overload; static;
     class function Map(const Source: TArray<T>; const Lambda: TMapToLRef): TArray<R>; overload; static;
-    class function Map(const Source: array of T; const Lambda: TMapToLRef): TArray<R>; overload; static;
+    class function Map(const Source: array of T; const Lambda: TMapToLRef): ArrayOfR; overload; static;
 
     class function Reduce(const Source: IEnumerable<T>; const Init: R; const Lambda: TReduceToRef): R; overload; static;
     class function Reduce(const Source: TEnumerable<T>; const Init: R; const Lambda: TReduceToRef): R; overload; static;
@@ -179,7 +183,7 @@ class function TMapReduce<T>.MapToArr(const Source: TEnumerable<T>; const Lambda
 {$Include Map}
 class function TMapReduce<T>.Map(const Source: TArray<T>; const Lambda: TMapRef): TArray<T>;
 {$Include Map}
-class function TMapReduce<T>.Map(const Source: array of T; const Lambda: TMapRef): TArray<T>;
+class function TMapReduce<T>.Map(const Source: array of T; const Lambda: TMapRef): ArrayOfT;
 {$Include Map}
 // Lite
 class function TMapReduce<T>.MapToArr(const Source: IEnumerable<T>; const Lambda: TMapLRef): TArray<T>;
@@ -188,7 +192,7 @@ class function TMapReduce<T>.MapToArr(const Source: TEnumerable<T>; const Lambda
 {$Include MapL}
 class function TMapReduce<T>.Map(const Source: TArray<T>; const Lambda: TMapLRef): TArray<T>;
 {$Include MapL}
-class function TMapReduce<T>.Map(const Source: array of T; const Lambda: TMapLRef): TArray<T>;
+class function TMapReduce<T>.Map(const Source: array of T; const Lambda: TMapLRef): ArrayOfT;
 {$Include MapL}
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //~~~~~ That returns other type
@@ -200,7 +204,7 @@ class function TMapReduce<T, R>.MapToArr(const Source: TEnumerable<T>; const Lam
 {$Include Map}
 class function TMapReduce<T, R>.Map(const Source: TArray<T>; const Lambda: TMapToRef): TArray<R>;
 {$Include Map}
-class function TMapReduce<T, R>.Map(const Source: array of T; const Lambda: TMapToRef): TArray<R>;
+class function TMapReduce<T, R>.Map(const Source: array of T; const Lambda: TMapToRef): ArrayOfR;
 {$Include Map}
 // Lite
 class function TMapReduce<T, R>.MapToArr(const Source: IEnumerable<T>; const Lambda: TMapToLRef): TArray<R>;
@@ -209,7 +213,7 @@ class function TMapReduce<T, R>.MapToArr(const Source: TEnumerable<T>; const Lam
 {$Include MapL}
 class function TMapReduce<T, R>.Map(const Source: TArray<T>; const Lambda: TMapToLRef): TArray<R>;
 {$Include MapL}
-class function TMapReduce<T, R>.Map(const Source: array of T; const Lambda: TMapToLRef): TArray<R>;
+class function TMapReduce<T, R>.Map(const Source: array of T; const Lambda: TMapToLRef): ArrayOfR;
 {$Include MapL}
 //====================================================================================================
 
@@ -225,7 +229,7 @@ class function TMapReduce<T>.FilterToArr(const Source: TEnumerable<T>; const Lam
 {$Include Filter}
 class function TMapReduce<T>.Filter(const Source: TArray<T>; const Lambda: TFilterRef): TArray<T>;
 {$Include Filter}
-class function TMapReduce<T>.Filter(const Source: array of T; const Lambda: TFilterRef): TArray<T>;
+class function TMapReduce<T>.Filter(const Source: array of T; const Lambda: TFilterRef): ArrayOfT;
 {$Include Filter}
 // Lite
 class function TMapReduce<T>.FilterToArr(const Source: IEnumerable<T>; const Lambda: TFilterLRef): TArray<T>;
@@ -234,7 +238,7 @@ class function TMapReduce<T>.FilterToArr(const Source: TEnumerable<T>; const Lam
 {$Include FilterL}
 class function TMapReduce<T>.Filter(const Source: TArray<T>; const Lambda: TFilterLRef): TArray<T>;
 {$Include FilterL}
-class function TMapReduce<T>.Filter(const Source: array of T; const Lambda: TFilterLRef): TArray<T>;
+class function TMapReduce<T>.Filter(const Source: array of T; const Lambda: TFilterLRef): ArrayOfT;
 {$Include FilterL}
 //====================================================================================================
 
