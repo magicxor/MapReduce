@@ -126,7 +126,7 @@ begin
       if not Lambda(Source[AIndex]) then
       begin
         TInterlocked.Exchange(ResultValue, 0);
-        ALoopState.Break; // .Stop ???
+        ALoopState.Break;
       end;
     end);
   Result := ResultValue.ToBoolean;
@@ -143,7 +143,7 @@ begin
       if Lambda(Source[AIndex]) then
       begin
         TInterlocked.Exchange(ResultValue, 1);
-        ALoopState.Break; // .Stop ???
+        ALoopState.Break;
       end;
     end);
   Result := ResultValue.ToBoolean;

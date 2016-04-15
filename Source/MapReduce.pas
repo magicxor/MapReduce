@@ -129,14 +129,13 @@ type
 implementation
 
 //====================================================================================================
-// Foreach methods that can change an array
+// Mutable ForEach
 //====================================================================================================
-// Heavy
 class procedure TMapReduce<T>.ForEachArrChange(var Source: TArray<T>; const Lambda: TForEachChangeRef);
 {$Include ForEachChange}
 class procedure TMapReduce<T>.ForEachArrChange(var Source: array of T; const Lambda: TForEachChangeRef);
 {$Include ForEachChange}
-// Lite
+
 class procedure TMapReduce<T>.ForEachArrChange(var Source: TArray<T>; const Lambda: TForEachChangeLRef);
 {$Include ForEachChangeL}
 class procedure TMapReduce<T>.ForEachArrChange(var Source: array of T; const Lambda: TForEachChangeLRef);
@@ -144,11 +143,9 @@ class procedure TMapReduce<T>.ForEachArrChange(var Source: array of T; const Lam
 //====================================================================================================
 
 
-
 //====================================================================================================
-// Foreach methods that can NOT change an array
+// Immutable ForEach
 //====================================================================================================
-// Heavy
 class procedure TMapReduce<T>.ForEach(const Source: IEnumerable<T>; const Lambda: TForEachRef);
 {$Include ForEach}
 class procedure TMapReduce<T>.ForEach(const Source: TEnumerable<T>; const Lambda: TForEachRef);
@@ -157,7 +154,7 @@ class procedure TMapReduce<T>.ForEach(const Source: TArray<T>; const Lambda: TFo
 {$Include ForEach}
 class procedure TMapReduce<T>.ForEach(const Source: array of T; const Lambda: TForEachRef);
 {$Include ForEach}
-// Lite
+
 class procedure TMapReduce<T>.ForEach(const Source: IEnumerable<T>; const Lambda: TForEachLRef);
 {$Include ForEachL}
 class procedure TMapReduce<T>.ForEach(const Source: TEnumerable<T>; const Lambda: TForEachLRef);
@@ -169,14 +166,12 @@ class procedure TMapReduce<T>.ForEach(const Source: array of T; const Lambda: TF
 //====================================================================================================
 
 
-
 //====================================================================================================
-// Map methods
+// Map
 //====================================================================================================
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//~~~~~ That returns the same type
+//~~~~~ returns the same type
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Heavy
 class function TMapReduce<T>.MapToArr(const Source: IEnumerable<T>; const Lambda: TMapRef): TArray<T>;
 {$Include Map}
 class function TMapReduce<T>.MapToArr(const Source: TEnumerable<T>; const Lambda: TMapRef): TArray<T>;
@@ -185,7 +180,7 @@ class function TMapReduce<T>.Map(const Source: TArray<T>; const Lambda: TMapRef)
 {$Include Map}
 class function TMapReduce<T>.Map(const Source: array of T; const Lambda: TMapRef): ArrayOfT;
 {$Include Map}
-// Lite
+
 class function TMapReduce<T>.MapToArr(const Source: IEnumerable<T>; const Lambda: TMapLRef): TArray<T>;
 {$Include MapL}
 class function TMapReduce<T>.MapToArr(const Source: TEnumerable<T>; const Lambda: TMapLRef): TArray<T>;
@@ -195,9 +190,8 @@ class function TMapReduce<T>.Map(const Source: TArray<T>; const Lambda: TMapLRef
 class function TMapReduce<T>.Map(const Source: array of T; const Lambda: TMapLRef): ArrayOfT;
 {$Include MapL}
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//~~~~~ That returns other type
+//~~~~~ returns another type
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Heavy
 class function TMapReduce<T, R>.MapToArr(const Source: IEnumerable<T>; const Lambda: TMapToRef): TArray<R>;
 {$Include Map}
 class function TMapReduce<T, R>.MapToArr(const Source: TEnumerable<T>; const Lambda: TMapToRef): TArray<R>;
@@ -206,7 +200,7 @@ class function TMapReduce<T, R>.Map(const Source: TArray<T>; const Lambda: TMapT
 {$Include Map}
 class function TMapReduce<T, R>.Map(const Source: array of T; const Lambda: TMapToRef): ArrayOfR;
 {$Include Map}
-// Lite
+
 class function TMapReduce<T, R>.MapToArr(const Source: IEnumerable<T>; const Lambda: TMapToLRef): TArray<R>;
 {$Include MapL}
 class function TMapReduce<T, R>.MapToArr(const Source: TEnumerable<T>; const Lambda: TMapToLRef): TArray<R>;
@@ -218,11 +212,9 @@ class function TMapReduce<T, R>.Map(const Source: array of T; const Lambda: TMap
 //====================================================================================================
 
 
-
 //====================================================================================================
-// Filter methods
+// Filter
 //====================================================================================================
-// Heavy
 class function TMapReduce<T>.FilterToArr(const Source: IEnumerable<T>; const Lambda: TFilterRef): TArray<T>;
 {$Include Filter}
 class function TMapReduce<T>.FilterToArr(const Source: TEnumerable<T>; const Lambda: TFilterRef): TArray<T>;
@@ -231,7 +223,7 @@ class function TMapReduce<T>.Filter(const Source: TArray<T>; const Lambda: TFilt
 {$Include Filter}
 class function TMapReduce<T>.Filter(const Source: array of T; const Lambda: TFilterRef): ArrayOfT;
 {$Include Filter}
-// Lite
+
 class function TMapReduce<T>.FilterToArr(const Source: IEnumerable<T>; const Lambda: TFilterLRef): TArray<T>;
 {$Include FilterL}
 class function TMapReduce<T>.FilterToArr(const Source: TEnumerable<T>; const Lambda: TFilterLRef): TArray<T>;
@@ -243,9 +235,8 @@ class function TMapReduce<T>.Filter(const Source: array of T; const Lambda: TFil
 //====================================================================================================
 
 
-
 //====================================================================================================
-// Every methods
+// Every
 //====================================================================================================
 class function TMapReduce<T>.Every(const Source: IEnumerable<T>; const Lambda: TPredicateRef): Boolean;
 {$Include Every}
@@ -258,9 +249,8 @@ class function TMapReduce<T>.Every(const Source: array of T; const Lambda: TPred
 //====================================================================================================
 
 
-
 //====================================================================================================
-// Some methods
+// Some
 //====================================================================================================
 class function TMapReduce<T>.Some(const Source: IEnumerable<T>; const Lambda: TPredicateRef): Boolean;
 {$Include Some}
@@ -272,16 +262,13 @@ class function TMapReduce<T>.Some(const Source: array of T; const Lambda: TPredi
 {$Include Some}
 //====================================================================================================
 
-
-
 //====================================================================================================
-// Reduce methods
+// Reduce
 //====================================================================================================
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//~~~~~ That returns the same type
+//~~~~~ returns the same type
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //---- With Init
-// Heavy
 class function TMapReduce<T>.Reduce(const Source: IEnumerable<T>; const Init: T; const Lambda: TReduceRef): T;
 {$Include Reduce}
 class function TMapReduce<T>.Reduce(const Source: TEnumerable<T>; const Init: T; const Lambda: TReduceRef): T;
@@ -290,7 +277,7 @@ class function TMapReduce<T>.Reduce(const Source: TArray<T>; const Init: T; cons
 {$Include Reduce}
 class function TMapReduce<T>.Reduce(const Source: array of T; const Init: T; const Lambda: TReduceRef): T;
 {$Include Reduce}
-// Lite
+
 class function TMapReduce<T>.Reduce(const Source: IEnumerable<T>; const Init: T; const Lambda: TReduceLRef): T;
 {$Include ReduceL}
 class function TMapReduce<T>.Reduce(const Source: TEnumerable<T>; const Init: T; const Lambda: TReduceLRef): T;
@@ -299,8 +286,8 @@ class function TMapReduce<T>.Reduce(const Source: TArray<T>; const Init: T; cons
 {$Include ReduceL}
 class function TMapReduce<T>.Reduce(const Source: array of T; const Init: T; const Lambda: TReduceLRef): T;
 {$Include ReduceL}
+
 //---- Without Init
-// Heavy
 class function TMapReduce<T>.Reduce(const Source: IEnumerable<T>; const Lambda: TReduceRef): T;
 var
   Values: IEnumerator<T>;
@@ -343,7 +330,7 @@ class function TMapReduce<T>.Reduce(const Source: TArray<T>; const Lambda: TRedu
 {$Include ReduceAlt}
 class function TMapReduce<T>.Reduce(const Source: array of T; const Lambda: TReduceRef): T;
 {$Include ReduceAlt}
-// Lite
+
 class function TMapReduce<T>.Reduce(const Source: IEnumerable<T>; const Lambda: TReduceLRef): T;
 var
   Values: IEnumerator<T>;
@@ -376,10 +363,10 @@ class function TMapReduce<T>.Reduce(const Source: TArray<T>; const Lambda: TRedu
 {$Include ReduceAltL}
 class function TMapReduce<T>.Reduce(const Source: array of T; const Lambda: TReduceLRef): T;
 {$Include ReduceAltL}
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//~~~~~ That returns other type:
+//~~~~~ returns another type:
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Heavy
 class function TMapReduce<T, R>.Reduce(const Source: IEnumerable<T>; const Init: R; const Lambda: TReduceToRef): R;
 {$Include Reduce}
 class function TMapReduce<T, R>.Reduce(const Source: TEnumerable<T>; const Init: R; const Lambda: TReduceToRef): R;
@@ -388,7 +375,7 @@ class function TMapReduce<T, R>.Reduce(const Source: TArray<T>; const Init: R; c
 {$Include Reduce}
 class function TMapReduce<T, R>.Reduce(const Source: array of T; const Init: R; const Lambda: TReduceToRef): R;
 {$Include Reduce}
-// Lite
+
 class function TMapReduce<T, R>.Reduce(const Source: IEnumerable<T>; const Init: R; const Lambda: TReduceToLRef): R;
 {$Include ReduceL}
 class function TMapReduce<T, R>.Reduce(const Source: TEnumerable<T>; const Init: R; const Lambda: TReduceToLRef): R;
