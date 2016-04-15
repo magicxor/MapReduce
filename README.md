@@ -2,6 +2,7 @@
 Routines that use higher-order functions to perform some tasks.
 
 Non-parallel: Mutable ForEach, Immutable ForEach, Map, Filter, Every, Some, Reduce.
+
 Parallel: Map, Filter, Every, Some.
 
 ### Usage
