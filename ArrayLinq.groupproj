@@ -1,0 +1,60 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{63D3B9A6-1BDC-4217-87B6-DABAD58E6988}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="sources\ArrayLinqSources.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="tests\ArrayLinqTests.dproj">
+            <Dependencies>sources\ArrayLinqSources.dproj</Dependencies>
+        </Projects>
+        <Projects Include="samples\ArrayLinqSamples.dproj">
+            <Dependencies>sources\ArrayLinqSources.dproj</Dependencies>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="ArrayLinqSources">
+        <MSBuild Projects="sources\ArrayLinqSources.dproj"/>
+    </Target>
+    <Target Name="ArrayLinqSources:Clean">
+        <MSBuild Projects="sources\ArrayLinqSources.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ArrayLinqSources:Make">
+        <MSBuild Projects="sources\ArrayLinqSources.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="ArrayLinqTests" DependsOnTargets="ArrayLinqSources">
+        <MSBuild Projects="tests\ArrayLinqTests.dproj"/>
+    </Target>
+    <Target Name="ArrayLinqTests:Clean" DependsOnTargets="ArrayLinqSources:Clean">
+        <MSBuild Projects="tests\ArrayLinqTests.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ArrayLinqTests:Make" DependsOnTargets="ArrayLinqSources:Make">
+        <MSBuild Projects="tests\ArrayLinqTests.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="ArrayLinqSamples" DependsOnTargets="ArrayLinqSources">
+        <MSBuild Projects="samples\ArrayLinqSamples.dproj"/>
+    </Target>
+    <Target Name="ArrayLinqSamples:Clean" DependsOnTargets="ArrayLinqSources:Clean">
+        <MSBuild Projects="samples\ArrayLinqSamples.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ArrayLinqSamples:Make" DependsOnTargets="ArrayLinqSources:Make">
+        <MSBuild Projects="samples\ArrayLinqSamples.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="ArrayLinqSources;ArrayLinqTests;ArrayLinqSamples"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="ArrayLinqSources:Clean;ArrayLinqTests:Clean;ArrayLinqSamples:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="ArrayLinqSources:Make;ArrayLinqTests:Make;ArrayLinqSamples:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

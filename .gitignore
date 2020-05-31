@@ -59,3 +59,5 @@ __history/
 # bin
 Android/
 OSX32/
+tests/Win64/
+tests/Win32/Release/dunit.ini

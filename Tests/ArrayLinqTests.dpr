@@ -1,4 +1,4 @@
-program MapReduceTests;
+program ArrayLinqTests;
 {
 
   Delphi DUnit Test Project
@@ -16,12 +16,13 @@ program MapReduceTests;
 
 uses
   DUnitTestRunner,
-  TestMapReduce in 'TestMapReduce.pas',
-  MapReduce in '..\Source\MapReduce.pas';
+  Tests in 'Tests.pas',
+  ArrayContainer in '..\sources\ArrayContainer.pas';
 
 {$R *.RES}
 
 begin
+  ReportMemoryLeaksOnShutdown := true;
   DUnitTestRunner.RunRegisteredTests;
 end.
 
