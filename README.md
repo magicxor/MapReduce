@@ -4,9 +4,9 @@ Methods that use higher-order functions to perform some tasks:
 
 Every, Some, Filter, Map, FlatMap, Reduce, ForEach, Order, FirstOrDefault
 
-### Usage
+(LINQ analogs: All, Any, Where, Select, SelectMany, Aggregate, ForEach, OrderBy, FirstOrDefault)
 
-v0.2:
+### Usage
 
 ```delphi
 myPet := TArrayContainer<TCat>
@@ -22,37 +22,6 @@ myPet := TArrayContainer<TCat>
   .FirstOrDefault(function(const x: string): boolean begin exit(x.StartsWith('S')) end);
 
 Writeln('Your pet is ' + myPet); // Sam
-```
-
-v0.1:
-
-```delphi
-procedure TestMap();
-var
-  ResultArr: TArray<string>;
-begin
-  ResultArr := TMapReduce<string>.Map(['white', 'black', 'ginger'],
-                function(const X: string): string
-                begin
-                  Result := X + ' cat';
-                end);
-  // ResultArr = ('white cat', 'black cat', 'ginger cat')
-end;
-```
-
-```delphi
-procedure TestReduce();
-var
-  ResultStr: string;
-begin
-  ResultStr := TMapReduce<string>.Reduce(['white', 'black', 'ginger'], string.Empty,
-                function(const Accumulator: string; const X: string): string
-                begin
-                  Result := Accumulator + X + ' cat, '
-                end)
-                .TrimRight([',', ' ']);
-  // ResultStr = 'white cat, black cat, ginger cat'
-end;
 ```
 
 ### Compilation guide
