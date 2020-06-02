@@ -1,6 +1,8 @@
 # MapReduce / ArrayLinq
 
-Methods that use higher-order functions to perform some tasks:
+LINQ for Delphi (Object Pascal)
+
+`TArrayContainer<T>` contains methods that use higher-order functions to perform some tasks:
 
 Every, Some, Filter, Map, FlatMap, Reduce, ForEach, Order, FirstOrDefault
 
