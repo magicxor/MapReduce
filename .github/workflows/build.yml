@@ -24,7 +24,7 @@ jobs:
         DOCKER_TAG: magicxor/radstudio:xe8upd1-delphi-net3.5-ltsc2019        
       run: |
         $currentDir = (Get-Location).Path;
-        docker run -v "${currentDir}:C:\build\app" $DOCKER_TAG powershell -Command 'msbuild /t:build /p:Config=Release /p:Platform=Win64 /p:DCC_Define=CONSOLE_TESTRUNNER C:\build\app\ArrayLinq.groupproj; Set-Content -NoNewline -Force -Path C:\build\app\build_result.txt -Value $LastExitCode;';
+        docker run -v "${currentDir}:C:\build\app" ${env:DOCKER_TAG} powershell -Command 'msbuild /t:build /p:Config=Release /p:Platform=Win64 /p:DCC_Define=CONSOLE_TESTRUNNER C:\build\app\ArrayLinq.groupproj; Set-Content -NoNewline -Force -Path C:\build\app\build_result.txt -Value $LastExitCode;';
         $buildResult = Get-Content -Path build_result.txt;
         if ($buildResult -ne '0') { throw ('msbuild exit code: ' + $buildResult); } else { Write-Host ('msbuild exit code: ' + $buildResult); }
 
