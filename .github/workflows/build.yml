@@ -31,7 +31,9 @@ jobs:
     - name: Run unit tests
       id: unit-tests
       run: |
-        C:\build\app\tests\Win64\Release\ArrayLinqTests.exe | Out-File -FilePath C:\build\app\unit_tests_result.txt;
-        $testsResult = Get-Content -Path build_result.txt;
+        $currentDir = (Get-Location).Path;
+        $testRunner = [IO.Path]::Combine($currentDir, 'tests', 'Win64', 'Release', 'ArrayLinqTests.exe');
+        & $testRunner | Out-File -FilePath unit_tests_result.txt;
+        $testsResult = Get-Content -Path unit_tests_result.txt;
         Write-Host ($testsResult);
         if ($testsResult -match 'FAILURES!!!') { throw ('unit tests result: fail'); } else { Write-Host ('unit tests result: OK'); }
