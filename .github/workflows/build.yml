@@ -31,6 +31,11 @@ jobs:
     - name: Run unit tests
       id: unit-tests
       run: |
+        Get-ChildItem C:\build\app
+        Get-ChildItem C:\build\app\tests
+        Get-ChildItem C:\build\app\tests\Win64
+        Get-ChildItem C:\build\app\tests\Win64\Release
+        Get-ChildItem C:\build\app\Win64\Release
         C:\build\app\tests\Win64\Release\ArrayLinqTests.exe | Out-File -FilePath C:\build\app\unit_tests_result.txt;
         $testsResult = Get-Content -Path build_result.txt;
         Write-Host ($testsResult);
