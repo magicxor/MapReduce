@@ -22,6 +22,6 @@ jobs:
       id: build
       run: |
         $currentDir = (Get-Location).Path;
-        docker run -v "${currentDir}:C:\build\app" magicxor/radstudio:xe8upd1-delphi-net3.5-ltsc2019 powershell -Command 'msbuild /t:build /p:DCC_Define=CONSOLE_TESTRUNNER C:\build\app\ArrayLinq.groupproj; Set-Content -NoNewline -Force -Path build_result.txt -Value $LastExitCode;';
+        docker run -v "${currentDir}:C:\build\app" magicxor/radstudio:xe8upd1-delphi-net3.5-ltsc2019 powershell -Command 'msbuild /t:build /p:DCC_Define=CONSOLE_TESTRUNNER C:\build\app\ArrayLinq.groupproj; Set-Content -NoNewline -Force -Path C:\build\app\build_result.txt -Value $LastExitCode;';
         $buildResult = Get-Content -Path build_result.txt;
         if ($buildResult -ne '0') { throw ('msbuild exit code: ' + $buildResult); } else { Write-Host ('msbuild exit code: ' + $buildResult); }
