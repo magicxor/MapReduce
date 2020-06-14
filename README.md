@@ -1,5 +1,7 @@
 # MapReduce / ArrayLinq
 
+![build](https://github.com/magicxor/MapReduce/workflows/build/badge.svg?branch=master&event=push)
+
 LINQ for Delphi (Object Pascal)
 
 `TArrayContainer<T>` contains methods that use higher-order functions to perform some tasks:
